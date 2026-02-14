@@ -59,20 +59,3 @@ Implementación de medidas de seguridad mínimas:
 *   **Manejo de Credenciales**:
     *   Credenciales inyectadas vía Variables de Entorno (`DATABASE_URL`).
     *   La base de datos no expone el puerto 5432 a internet, solo a la red interna de Docker (`frontend` -> `db`).
-
-## 🤖 Bitácora de IA
-
-Pasos clave realizados por el Asistente:
-
-1.  **Corrección de Docker**:
-    *   *Problema*: La DB fallaba al inicializar scripts en desorden.
-    *   *IA*: Ordenó los scripts (`01_schema`, `02_reports`...) en `docker-compose.yml`.
-2.  **Implementación Frontend**:
-    *   *Prompt*: "Implementa los reportes faltantes".
-    *   *IA*: Creó páginas 2-5, schemas Zod, y lógica de filtros/paginación.
-3.  **Debugging**:
-    *   *Problema*: "Module not found".
-    *   *IA*: Identificó error de rutas relativas y corrigió imports.
-4.  **Validación de Requisitos**:
-    *   *Check*: Noté que faltaban "Dificultad Obligatoria".
-    *   *Acción*: Propuse e implementé filtros (Rep 1 & 3) y paginación (Rep 2 & 4).

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { getRankingProductos } from '@/lib/services/reports';
 import { SearchParamsSchema } from '@/lib/definitions';
-import { query } from '@/lib/db'; // Direct query for categories dropdown list
-import { z } from 'zod';
+import { query } from '@/lib/db';
+import CategoryFilter from './CategoryFilter'; // Import the new component
 
 export default async function RankingProductos({
     searchParams,
@@ -40,30 +40,7 @@ export default async function RankingProductos({
                     </div>
 
                     {/* FILTRO DE DIFICULTAD OBLIGATORIA */}
-                    <form className="flex gap-2 items-center">
-                        <label htmlFor="category" className="text-sm font-medium text-gray-700">Categoría:</label>
-                        <div className="relative">
-                            <select
-                                name="query"
-                                defaultValue={selectedCategory || ''}
-                                className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-                                onChange={(e) => {
-                                    // This is a server component, so we use a small hack or form submission.
-                                    // Ideally use client component for interactions, but keeping it simple as requested server components.
-                                    // For a pure server component approach with native form:
-                                }}
-                            >
-                                <option value="">Todas</option>
-                                {categories.map((cat: string) => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
-                            {/* Hack for "pure" server component filter without client JS interaction for onChange submission */}
-                            <button type="submit" className="ml-2 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700">
-                                Filtrar
-                            </button>
-                        </div>
-                    </form>
+                    <CategoryFilter categories={categories} initialCategory={selectedCategory} />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

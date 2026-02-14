@@ -1,0 +1,6 @@
+# .dockerignore creation
+
+node_modules
+.next
+.git
+.env*

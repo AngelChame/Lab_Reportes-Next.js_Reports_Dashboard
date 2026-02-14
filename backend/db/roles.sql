@@ -26,6 +26,9 @@ GRANT SELECT ON view_ranking_productos TO web_app_user;
 GRANT SELECT ON view_analisis_stock TO web_app_user;
 GRANT SELECT ON view_eficiencia_ordenes TO web_app_user;
 
+-- Permiso necesario para el filtro de categorías en el frontend
+GRANT SELECT ON categorias TO web_app_user;
+
 -- 5. Verificación de permisos (Query de utilidad)
 -- Ejecutar esto para confirmar que el usuario no tiene acceso a las tablas:
 -- SET ROLE web_app_user;

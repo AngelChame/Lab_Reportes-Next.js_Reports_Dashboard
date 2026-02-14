@@ -39,8 +39,7 @@ services:
       # Sobrescribimos la variable del .env para usar el host y puerto INTERNO de Docker
       DATABASE_URL: postgres://web_app_user:password_seguro_123@db:5432/lab_reportes
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     volumes:
       - ./frontend:/app
       - /app/node_modules
