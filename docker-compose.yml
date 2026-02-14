@@ -13,15 +13,37 @@ services:
       - "127.0.0.1:5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db:/scripts:ro  # Scripts accesibles en /scripts (NO se autoejecuttan)
+      - ./db:/scripts:ro  # Scripts accesibles en /scripts (NO se autoejecutan)
+      # Orden de ejecucion: 01_schema -> 02_reports -> 03_roles -> 04_seed -> 05_indexes -> 06_migrate
       - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
-      - ./backend/db/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
-      - ./backend/db/migrate.sql:/docker-entrypoint-initdb.d/03_migrate.sql
+      - ./backend/db/reports_vw.sql:/docker-entrypoint-initdb.d/02_reports_vw.sql
+      - ./backend/db/roles.sql:/docker-entrypoint-initdb.d/03_roles.sql
+      - ./backend/db/seed.sql:/docker-entrypoint-initdb.d/04_seed.sql
+      - ./backend/db/indexes.sql:/docker-entrypoint-initdb.d/05_indexes.sql
+      - ./backend/db/migrate.sql:/docker-entrypoint-initdb.d/06_migrate.sql
+
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
+
+  frontend:
+    build: ./frontend
+    container_name: lab_reportes_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Sobrescribimos la variable del .env para usar el host y puerto INTERNO de Docker
+      DATABASE_URL: postgres://web_app_user:password_seguro_123@db:5432/lab_reportes
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   postgres_data:
